@@ -65,11 +65,18 @@ jobs:
         run: |
           dependencies/linux/arkhelper dir2ark ./_ark ./_build/xbox/gen -n "patch_xbox" -e -v 6
       
-      - name: Upload result
-        uses: actions/upload-artifact@v2
+      - name: Upload release
+        uses: svenstaro/upload-release-action@v2
         with:
           name: RB3DX-Xbox-Base
           path: _build/xbox
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          release_name: Nightly Build - ${{ steps.latestCommit.outputs.commitSHA }}
+          tag: ${{ steps.latestCommit.outputs.commitShortSHA }}
+          file: Release/*
+          file_glob: true
+          body: |
+            testing
 
   build_xbox_forceguitar:
     runs-on: ubuntu-latest
